@@ -12,7 +12,7 @@
 	<artifactId>user</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user</name>
-	<description>User authentication and authorization project for Spring Boot</description>
+	<description>User service for authentication and authorization</description>
 	<url/>
 	<licenses>
 		<license/>

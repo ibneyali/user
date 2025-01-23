@@ -1,10 +1,11 @@
 package com.orders.user.config;
 
-import com.orders.user.services.JwtService;
+import com.orders.user.services.impl.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,19 +19,21 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
+/**
+ * @author Ibney Ali
+ */
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	private final HandlerExceptionResolver handlerExceptionResolver;
 
-	private final JwtService jwtService;
-	private final UserDetailsService userDetailsService;
+	@Autowired
+	HandlerExceptionResolver handlerExceptionResolver;
 
-	public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService,
-			HandlerExceptionResolver handlerExceptionResolver) {
-		this.jwtService = jwtService;
-		this.userDetailsService = userDetailsService;
-		this.handlerExceptionResolver = handlerExceptionResolver;
-	}
+	@Autowired
+	JwtServiceImpl jwtService;
+
+	@Autowired
+	UserDetailsService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,

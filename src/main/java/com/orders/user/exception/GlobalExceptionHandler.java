@@ -96,5 +96,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
     }
 
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotVerifiedException(UserNotVerifiedException ex) {
+        Map<String, String> errorDetails = new HashMap<>();
+        errorDetails.put("error", "Bad Request");
+        errorDetails.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }
 
 }

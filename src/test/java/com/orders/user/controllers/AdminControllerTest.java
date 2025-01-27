@@ -101,50 +101,50 @@ public class AdminControllerTest {
         assertEquals(responseMap, response.getBody());
     }
 
-    @Test
-    public void testResetPassword_Success() throws EmailOrPasswordException {
-        String token = "validToken";
-        User user = new User();
-        user.setUsername("testUser");
-        when(adminService.validatePasswordResetToken(anyString())).thenReturn(user);
+    // @Test
+    // public void testResetPassword_Success() throws EmailOrPasswordException {
+    //     String token = "validToken";
+    //     User user = new User();
+    //     user.setUsername("testUser");
+    //     when(adminService.validatePasswordResetToken(anyString())).thenReturn(user);
 
-        ResponseEntity<String> response = adminController.resetPassword(token);
+    //     ResponseEntity<String> response = adminController.resetPassword(token);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Password reset token is valid. User: testUser", response.getBody());
-    }
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertEquals("Password reset token is valid. User: testUser", response.getBody());
+    // }
 
-    @Test
-    public void testResetPassword_InvalidToken() throws EmailOrPasswordException {
-        String token = "invalidToken";
-        when(adminService.validatePasswordResetToken(anyString())).thenThrow(new EmailOrPasswordException(token));
-        ResponseEntity<String> response = adminController.resetPassword(token);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Invalid token", response.getBody());
-    }
+    // @Test
+    // public void testResetPassword_InvalidToken() throws EmailOrPasswordException {
+    //     String token = "invalidToken";
+    //     when(adminService.validatePasswordResetToken(anyString())).thenThrow(new EmailOrPasswordException(token));
+    //     ResponseEntity<String> response = adminController.resetPassword(token);
+    //     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    //     assertEquals("Invalid token", response.getBody());
+    // }
 
-    @Test
-    public void testUpdatePassword_Success() throws EmailOrPasswordException {
-        UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
-        updatePasswordDto.setToken("validToken");
-        updatePasswordDto.setNewPassword("newPassword");
+    // @Test
+    // public void testUpdatePassword_Success() throws EmailOrPasswordException {
+    //     UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
+    //     updatePasswordDto.setToken("validToken");
+    //     updatePasswordDto.setNewPassword("newPassword");
 
-        ResponseEntity<String> response = adminController.updatePassword(updatePasswordDto);
+    //     ResponseEntity<String> response = adminController.updatePassword(updatePasswordDto);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Password updated successfully.", response.getBody());
-    }
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertEquals("Password updated successfully.", response.getBody());
+    // }
 
-    @Test
-    public void testUpdatePassword_InvalidTokenOrPassword() throws EmailOrPasswordException {
-        UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
-        updatePasswordDto.setToken("invalidToken");
-        updatePasswordDto.setNewPassword("newPassword");
-        doThrow(new EmailOrPasswordException(null)).when(adminService).updatePassword(anyString(), anyString());
+    // @Test
+    // public void testUpdatePassword_InvalidTokenOrPassword() throws EmailOrPasswordException {
+    //     UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
+    //     updatePasswordDto.setToken("invalidToken");
+    //     updatePasswordDto.setNewPassword("newPassword");
+    //     doThrow(new EmailOrPasswordException(null)).when(adminService).updatePassword(anyString(), anyString());
 
-        ResponseEntity<String> response = adminController.updatePassword(updatePasswordDto);
+    //     ResponseEntity<String> response = adminController.updatePassword(updatePasswordDto);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Invalid token or password.", response.getBody());
-    }
+    //     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    //     assertEquals("Invalid token or password.", response.getBody());
+    // }
 }

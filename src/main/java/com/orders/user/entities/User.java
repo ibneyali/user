@@ -54,6 +54,9 @@ public class User implements UserDetails {
 	@JoinColumn(name = "role", referencedColumnName="id")
 	private Role role;
 
+	@Column(nullable = false, name = "is_enabled")
+	private boolean enabled;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of();
@@ -76,11 +79,6 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
 		return true;
 	}
 

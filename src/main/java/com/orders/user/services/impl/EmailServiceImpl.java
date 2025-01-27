@@ -17,7 +17,16 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Password Reset Request");
-        message.setText("To reset your password, click the link below and It is valid for 5 minutes:\n http://localhost:8080/api/admin/reset-password?token=" + token);
+        message.setText("To reset your password, click the link below and It is valid for 5 minutes:\n http://localhost:8005/api/admin/reset-password?token=" + token);
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendEmail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
         mailSender.send(message);
     }
 }

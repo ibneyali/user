@@ -18,6 +18,7 @@ public interface AdminService {
     User authenticate(LoginUserDto input);
     Map<String, String> forgotPassword(String email, HttpServletRequest request);
     User validatePasswordResetToken(String token);
-    void updatePassword(String token, String password);
+    void updatePassword(String token, String password, String confirmPassword);
     void logout();
+    boolean verifyEmail(String token);
 }

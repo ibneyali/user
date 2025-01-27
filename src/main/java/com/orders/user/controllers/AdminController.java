@@ -12,12 +12,14 @@ import com.orders.user.services.AdminService;
 import com.orders.user.services.impl.JwtServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -46,6 +48,16 @@ public class AdminController {
 		return ResponseEntity.ok(registeredUser);
 	}
 
+	@GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+        boolean isVerified = adminService.verifyEmail(token);
+        if (isVerified) {
+            return ResponseEntity.ok("Email verified successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired token.");
+        }
+    }
+
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> loginWithCred(@RequestBody LoginUserDto loginUserDto) {
 		logger.info("Logging in user: " + loginUserDto);
@@ -73,22 +85,22 @@ public class AdminController {
 	}
 
 	@GetMapping("/reset-password")
-	public ResponseEntity<String> resetPassword(@RequestParam("token") String token) {
+	public ResponseEntity<String> resetPassword(@RequestParam("token") String token, HttpServletResponse response) {
 		logger.info("Reset password token: " + token);
+		adminService.validatePasswordResetToken(token);
 		try {
-			User user = adminService.validatePasswordResetToken(token);
-			logger.info("Password reset token is valid. User: " + user.getUsername());
-			return ResponseEntity.ok("Password reset token is valid. User: " + user.getUsername());
-		} catch (EmailOrPasswordException e) {
-			return ResponseEntity.badRequest().body("Invalid token");
+			response.sendRedirect("http://localhost:3000/update-password?token=" + token);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return ResponseEntity.ok("Redirecting to update password page.");
 	}
 
 	@PutMapping("/update-password")
 	public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) {
 		logger.info("Updating password for token: " + updatePasswordDto.getToken());
 		try {
-			adminService.updatePassword(updatePasswordDto.getToken(), updatePasswordDto.getNewPassword());
+			adminService.updatePassword(updatePasswordDto.getToken(), updatePasswordDto.getPassword(), updatePasswordDto.getConfirmPassword());
 			logger.info("Password updated successfully.");
 			return ResponseEntity.ok("Password updated successfully.");
 		} catch (EmailOrPasswordException e) {

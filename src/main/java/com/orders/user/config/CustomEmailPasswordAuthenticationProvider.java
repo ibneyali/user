@@ -1,6 +1,5 @@
 package com.orders.user.config;
 
-import com.orders.user.config.CustomEmailPasswordAuthenticationToken;
 import com.orders.user.entities.User;
 import com.orders.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
